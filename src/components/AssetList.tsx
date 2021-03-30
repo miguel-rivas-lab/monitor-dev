@@ -1,12 +1,7 @@
 import clsx from "clsx";
 import { FC } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import {
-  addToWatchIds,
-  deleteFromWatchIds,
-  getAssets,
-  getWatchIds,
-} from "../api";
+import { addToWatchIds, getAssets, getWatchIds } from "../api";
 import { useDeleteWatchIdsMutation } from "../hooks/useDeleteWatchIdMutation";
 import styles from "./AssetList.module.css";
 import { TextLoading } from "./TextLoading";
