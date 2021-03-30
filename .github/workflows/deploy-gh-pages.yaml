@@ -12,5 +12,4 @@ jobs:
       - uses: actions/checkout@v2
       - uses: gurleensethi/react-github-pages@v0.4
         with:
-          project_folder: web_app
           access_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
