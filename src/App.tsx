@@ -18,7 +18,7 @@ export const App: FC = () => {
   return (
     <div className="App">
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
           <Switch>
             <Route exact path="/" component={HomePage} />
           </Switch>
