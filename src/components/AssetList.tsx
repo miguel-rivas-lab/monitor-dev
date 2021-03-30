@@ -7,6 +7,7 @@ import {
   getAssets,
   getWatchIds,
 } from "../api";
+import { useDeleteWatchIdsMutation } from "../hooks/useDeleteWatchIdMutation";
 import styles from "./AssetList.module.css";
 import { TextLoading } from "./TextLoading";
 
@@ -33,26 +34,7 @@ export const AssetList: FC = () => {
     }
   );
 
-  const deleteFromWatchIdsMutation = useMutation<void, any, string>(
-    "watching_assets",
-    (id) => deleteFromWatchIds(id),
-    {
-      onSuccess: (_, id) => {
-        queryClient.setQueryData<Record<string, boolean>>(
-          "watching_assets",
-          (prevData) => {
-            if (prevData) {
-              const { [id]: toDelete, ...rest } = prevData;
-              return rest;
-            }
-            return {};
-          }
-        );
-        queryClient.invalidateQueries("watching_assets");
-        deleteFromWatchIdsMutation.reset();
-      },
-    }
-  );
+  const deleteFromWatchIdsMutation = useDeleteWatchIdsMutation();
 
   const handleAddToWatchIds = (id: string) => {
     if (addToWatchIdsMutation.isIdle) {
@@ -104,7 +86,7 @@ export const AssetList: FC = () => {
                 {Math.round(Number(item.priceUsd) * 10000) / 10000.0}
               </div>
               <button
-                className={clsx("btn", isBeingWatched && "btn--danger")}
+                className={clsx("btn", isBeingWatched && "btn--warning")}
                 onClick={() =>
                   isBeingWatched
                     ? handleDeleteFromWatchIds(item.id)

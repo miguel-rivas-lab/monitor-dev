@@ -9,6 +9,12 @@ export async function getAssets(): Promise<Asset[]> {
     .then((res) => res.data.data);
 }
 
+export async function getAssetById(id: string): Promise<Asset> {
+  return axios
+    .get<{ data: Asset }>(`https://api.coincap.io/v2/assets/${id}`)
+    .then((res) => res.data.data);
+}
+
 export async function getWatchIds(): Promise<Record<string, boolean>> {
   const stringData = window.localStorage.getItem(WATCH_IDS_KEY);
 

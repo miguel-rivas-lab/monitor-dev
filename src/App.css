@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap");
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 24px;
@@ -35,16 +39,16 @@ body {
   background-color: rgb(0, 0, 255);
 }
 
-.btn--danger {
+.btn--warning {
   background-color: rgb(250, 120, 0);
   box-shadow: 0px 2px 4px rgb(250, 120, 0, 0.5);
 }
 
-.btn--danger:hover {
+.btn--warning:hover {
   cursor: pointer;
   background-color: rgb(250, 100, 0);
 }
 
-.btn--danger:active {
+.btn--warning:active {
   background-color: rgb(250, 70, 0);
 }
