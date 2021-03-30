@@ -1,0 +1,40 @@
+.error__text {
+  color: red;
+  margin-bottom: 12px;
+}
+
+.asset-item {
+  padding: 16px;
+  margin-bottom: 8px;
+  border: 1px #e1e1e1 solid;
+  border-radius: 4px;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+}
+
+.asset-item > *:first-child {
+  flex: 1;
+}
+
+.asset-item__name {
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.asset-item__symbol {
+  font-size: 13px;
+  color: gray;
+}
+
+.asset-item__price {
+  color: green;
+  letter-spacing: 1px;
+  font-family: monospace;
+  font-size: 18px;
+  margin-right: 16px;
+}
+
+.asset-item__price::before {
+  content: "$";
+}

@@ -1,0 +1,8 @@
+.loading__text {
+  letter-spacing: 2px;
+}
+
+.loading__dots {
+  letter-spacing: 4px;
+  font-size: 20px;
+}

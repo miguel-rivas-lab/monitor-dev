@@ -1,26 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { FC } from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { HomePage } from "./pages/Home";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
-function App() {
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  },
+});
+
+export const App: FC = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+          </Switch>
+        </BrowserRouter>
+        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+      </QueryClientProvider>
     </div>
   );
-}
-
-export default App;
+};
