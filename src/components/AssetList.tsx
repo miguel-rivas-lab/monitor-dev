@@ -1,13 +1,70 @@
+import clsx from "clsx";
 import { FC } from "react";
-import { useQuery } from "react-query";
-import { getAssets } from "../api";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import {
+  addToWatchIds,
+  deleteFromWatchIds,
+  getAssets,
+  getWatchIds,
+} from "../api";
 import styles from "./AssetList.module.css";
 import { TextLoading } from "./TextLoading";
 
 export const AssetList: FC = () => {
+  const queryClient = useQueryClient();
+
   const assetsQuery = useQuery("assets", () => getAssets(), {
     refetchInterval: 1500,
   });
+
+  const watchIdsQuery = useQuery("watching_assets", () => getWatchIds());
+
+  const addToWatchIdsMutation = useMutation<void, any, string>(
+    (id) => addToWatchIds(id),
+    {
+      onSuccess: (_, id) => {
+        queryClient.setQueryData<Record<string, boolean>>(
+          "watching_assets",
+          (prevData) => ({ ...prevData, [id]: true })
+        );
+        queryClient.invalidateQueries("watching_assets");
+        addToWatchIdsMutation.reset();
+      },
+    }
+  );
+
+  const deleteFromWatchIdsMutation = useMutation<void, any, string>(
+    "watching_assets",
+    (id) => deleteFromWatchIds(id),
+    {
+      onSuccess: (_, id) => {
+        queryClient.setQueryData<Record<string, boolean>>(
+          "watching_assets",
+          (prevData) => {
+            if (prevData) {
+              const { [id]: toDelete, ...rest } = prevData;
+              return rest;
+            }
+            return {};
+          }
+        );
+        queryClient.invalidateQueries("watching_assets");
+        deleteFromWatchIdsMutation.reset();
+      },
+    }
+  );
+
+  const handleAddToWatchIds = (id: string) => {
+    if (addToWatchIdsMutation.isIdle) {
+      addToWatchIdsMutation.mutate(id);
+    }
+  };
+
+  const handleDeleteFromWatchIds = (id: string) => {
+    if (deleteFromWatchIdsMutation.isIdle) {
+      deleteFromWatchIdsMutation.mutate(id);
+    }
+  };
 
   if (assetsQuery.isLoading) {
     return (
@@ -32,6 +89,9 @@ export const AssetList: FC = () => {
     <div>
       {assetsQuery.data &&
         assetsQuery.data.map((item) => {
+          const isBeingWatched =
+            watchIdsQuery.data && watchIdsQuery.data[item.id];
+
           return (
             <div className={styles["asset-item"]} key={item.id}>
               <div>
@@ -41,9 +101,18 @@ export const AssetList: FC = () => {
                 </div>
               </div>
               <div className={styles["asset-item__price"]}>
-                {Math.round(Number(item.priceUsd) * 100) / 100.0}
+                {Math.round(Number(item.priceUsd) * 10000) / 10000.0}
               </div>
-              <button className="btn">Watch</button>
+              <button
+                className={clsx("btn", isBeingWatched && "btn--danger")}
+                onClick={() =>
+                  isBeingWatched
+                    ? handleDeleteFromWatchIds(item.id)
+                    : handleAddToWatchIds(item.id)
+                }
+              >
+                {isBeingWatched ? "Unwatch" : "Watch"}
+              </button>
             </div>
           );
         })}

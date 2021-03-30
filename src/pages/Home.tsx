@@ -1,5 +1,6 @@
 import { FC, useState } from "react";
 import { AssetList } from "../components/AssetList";
+import { WatchAssetList } from "../components/WatchAssetList";
 
 export const HomePage: FC = () => {
   const [showAssets, setShowAssest] = useState(false);
@@ -21,6 +22,8 @@ export const HomePage: FC = () => {
           here.
         </a>
       </p>
+      <br />
+      <WatchAssetList />
       <button className="btn" onClick={handleClickAssetToggle}>
         {showAssets ? "Hide All Assets" : "Show All Assets"}
       </button>
