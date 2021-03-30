@@ -2,7 +2,7 @@ name: Deploy web app on Github Pages
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 jobs:
   deploy_react_app:
