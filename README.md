@@ -1,7 +1,5 @@
 ### [View the deployed app 🚀 🚀](https://gurleensethi.github.io/crypto-monitor/)
 
-<br />
-
 # crypto-monitor
 
 This is a sample app I built for testing out [`React Query`](https://react-query.tanstack.com/).
