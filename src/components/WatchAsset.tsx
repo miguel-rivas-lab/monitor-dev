@@ -1,5 +1,6 @@
-import { FC } from "react";
+import React, { FC } from "react";
 import { useQuery } from "react-query";
+import { useHistory } from "react-router-dom";
 import { getAssetById } from "../api";
 import { useDeleteWatchIdsMutation } from "../hooks/useDeleteWatchIdMutation";
 import { TextLoading } from "./TextLoading";
@@ -10,18 +11,25 @@ export interface WatchAssetItemProps {
 }
 
 export const WatchAssetItem: FC<WatchAssetItemProps> = ({ id }) => {
+  const history = useHistory();
   const assetQuery = useQuery(["assets", id], () => getAssetById(id), {
     refetchInterval: 1500,
   });
 
   const deleteFromWatchIdsMutation = useDeleteWatchIdsMutation();
 
-  const handleUnwatchClick = () => {
+  const handleUnwatchClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
     deleteFromWatchIdsMutation.mutate(id);
   };
 
+  const handleAssetClick = () => {
+    history.push(`/${id}`);
+  };
+
   return (
-    <div className={styles["watch-asset"]}>
+    <div className={styles["watch-asset"]} onClick={handleAssetClick}>
       {assetQuery.isLoading ? (
         <>
           <div className={styles["watch-asset__id"]}>{id}</div>

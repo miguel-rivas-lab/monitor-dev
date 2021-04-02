@@ -6,6 +6,16 @@
   height: 100%;
   display: flex;
   align-items: flex-end;
+  transition: 0.3s;
+}
+
+.watch-asset:hover {
+  cursor: pointer;
+  background-color: #f1f1f1;
+}
+
+.watch-asset:active {
+  background-color: #dfdfdf;
 }
 
 .watch-asset > *:first-child {
