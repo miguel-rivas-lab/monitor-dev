@@ -45,5 +45,8 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://gurleensethi.github.io/crypto-monitor"
+  "homepage": "https://gurleensethi.github.io/crypto-monitor",
+  "devDependencies": {
+    "prettier": "^2.2.1"
+  }
 }

@@ -5,6 +5,7 @@ import { addToWatchIds, getAssets, getWatchIds } from "../api";
 import { useDeleteWatchIdsMutation } from "../hooks/useDeleteWatchIdMutation";
 import styles from "./AssetList.module.css";
 import { TextLoading } from "./TextLoading";
+import { Link } from "react-router-dom";
 
 export const AssetList: FC = () => {
   const queryClient = useQueryClient();
@@ -70,27 +71,36 @@ export const AssetList: FC = () => {
             watchIdsQuery.data && watchIdsQuery.data[item.id];
 
           return (
-            <div className={styles["asset-item"]} key={item.id}>
-              <div>
-                <div className={styles["asset-item__name"]}>{item.name}</div>
-                <div className={styles["asset-item__symbol"]}>
-                  {item.symbol}
+            <Link to={`/${item.id}`} className={styles["link"]}>
+              <div className={styles["asset-item"]} key={item.id}>
+                <div>
+                  <div className={styles["asset-item__name"]}>{item.name}</div>
+                  <div className={styles["asset-item__symbol"]}>
+                    {item.symbol}
+                  </div>
                 </div>
+                <div className={styles["asset-item__price"]}>
+                  {Math.round(Number(item.priceUsd) * 10000) / 10000.0}
+                </div>
+                <button
+                  className={clsx(
+                    "btn",
+                    styles["asset-item__watch"],
+                    isBeingWatched && "btn--warning"
+                  )}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (isBeingWatched) {
+                      handleDeleteFromWatchIds(item.id);
+                    } else {
+                      handleAddToWatchIds(item.id);
+                    }
+                  }}
+                >
+                  {isBeingWatched ? "Unwatch" : "Watch"}
+                </button>
               </div>
-              <div className={styles["asset-item__price"]}>
-                {Math.round(Number(item.priceUsd) * 10000) / 10000.0}
-              </div>
-              <button
-                className={clsx("btn", isBeingWatched && "btn--warning")}
-                onClick={() =>
-                  isBeingWatched
-                    ? handleDeleteFromWatchIds(item.id)
-                    : handleAddToWatchIds(item.id)
-                }
-              >
-                {isBeingWatched ? "Unwatch" : "Watch"}
-              </button>
-            </div>
+            </Link>
           );
         })}
     </div>

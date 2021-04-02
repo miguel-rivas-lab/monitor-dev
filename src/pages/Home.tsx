@@ -1,12 +1,17 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { AssetList } from "../components/AssetList";
 import { WatchAssetList } from "../components/WatchAssetList";
+import { useGlobalUI } from "../context/useGlobalUI";
 
 export const HomePage: FC = () => {
-  const [showAssets, setShowAssest] = useState(false);
+  const globalUI = useGlobalUI();
 
   const handleClickAssetToggle = () => {
-    setShowAssest((val) => !val);
+    if (globalUI.state.showAssets) {
+      globalUI.dispatch({ type: "COLLAPSE_ASSETS" });
+    } else {
+      globalUI.dispatch({ type: "EXPAND_ASSETS" });
+    }
   };
 
   return (
@@ -25,9 +30,9 @@ export const HomePage: FC = () => {
       <br />
       <WatchAssetList />
       <button className="btn" onClick={handleClickAssetToggle}>
-        {showAssets ? "Hide All Assets" : "Show All Assets"}
+        {globalUI.state.showAssets ? "Hide All Assets" : "Show All Assets"}
       </button>
-      {showAssets && (
+      {globalUI.state.showAssets && (
         <>
           <h2>Assets</h2>
           <AssetList />
