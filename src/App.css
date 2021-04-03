@@ -52,3 +52,17 @@ body {
 .btn--warning:active {
   background-color: rgb(250, 70, 0);
 }
+
+.zoom-in-anim {
+  animation: zoom-in 1s ease-in-out 0s infinite alternate-reverse;
+}
+
+@keyframes zoom-in {
+  from {
+    transform: scale(0.9) translateY(5px) rotate(-5deg);
+  }
+
+  to {
+    transform: scale(1) translateY(-5px) rotate(-15deg);
+  }
+}
