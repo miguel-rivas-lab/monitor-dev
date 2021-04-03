@@ -14,3 +14,10 @@ export interface Asset {
   vwap24Hr: string;
   explorer: string;
 }
+
+export interface Price {
+  priceUsd: string;
+  time: number;
+  circulatingSupply: string;
+  date: string;
+}

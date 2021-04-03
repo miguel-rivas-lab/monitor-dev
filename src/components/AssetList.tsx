@@ -1,35 +1,19 @@
 import clsx from "clsx";
 import { FC } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { addToWatchIds, getAssets, getWatchIds } from "../api";
+import { useQuery } from "react-query";
+import { getAssets, getWatchIds } from "../api";
 import { useDeleteWatchIdsMutation } from "../hooks/useDeleteWatchIdMutation";
 import styles from "./AssetList.module.css";
 import { TextLoading } from "./TextLoading";
 import { Link } from "react-router-dom";
+import { useAddToWatchIdMutation } from "../hooks/useAddToWatchIdMutation";
 
 export const AssetList: FC = () => {
-  const queryClient = useQueryClient();
-
   const assetsQuery = useQuery("assets", () => getAssets(), {
     refetchInterval: 1500,
   });
-
   const watchIdsQuery = useQuery("watching_assets", () => getWatchIds());
-
-  const addToWatchIdsMutation = useMutation<void, any, string>(
-    (id) => addToWatchIds(id),
-    {
-      onSuccess: (_, id) => {
-        queryClient.setQueryData<Record<string, boolean>>(
-          "watching_assets",
-          (prevData) => ({ ...prevData, [id]: true })
-        );
-        queryClient.invalidateQueries("watching_assets");
-        addToWatchIdsMutation.reset();
-      },
-    }
-  );
-
+  const addToWatchIdsMutation = useAddToWatchIdMutation();
   const deleteFromWatchIdsMutation = useDeleteWatchIdsMutation();
 
   const handleAddToWatchIds = (id: string) => {

@@ -59,10 +59,10 @@ body {
 
 @keyframes zoom-in {
   from {
-    transform: scale(0.9) translateY(5px) rotate(-5deg);
+    transform: scale(0.7) translateY(5px) rotate(-5deg);
   }
 
   to {
-    transform: scale(1) translateY(-5px) rotate(-15deg);
+    transform: scale(0.8) translateY(-5px) rotate(-15deg);
   }
 }
