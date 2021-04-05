@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { GlobalUIContext, GlobalUIContextType } from "./GlobalUI";
+import { GlobalUIContext, GlobalUIContextType } from "../context/GlobalUI";
 
 export const useGlobalUI = (): GlobalUIContextType => {
   const context = useContext(GlobalUIContext);

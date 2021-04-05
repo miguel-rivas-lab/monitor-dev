@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { AssetList } from "../components/AssetList";
 import { WatchAssetList } from "../components/WatchAssetList";
-import { useGlobalUI } from "../context/useGlobalUI";
+import { useGlobalUI } from "../hooks/useGlobalUI";
 
 export const HomePage: FC = () => {
   const globalUI = useGlobalUI();
