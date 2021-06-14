@@ -1,92 +1,92 @@
-import clsx from "clsx";
 import { FC } from "react";
 import { useQuery } from "react-query";
-import { getAssets, getWatchIds } from "../api";
-import { useDeleteWatchIdsMutation } from "../hooks/useDeleteWatchIdMutation";
-import styles from "./AssetList.module.css";
-import { TextLoading } from "./TextLoading";
-import { Link } from "react-router-dom";
-import { useAddToWatchIdMutation } from "../hooks/useAddToWatchIdMutation";
+import { getAssets } from "../api";
+import { monitorDB } from "../db";
 
 export const AssetList: FC = () => {
+
+  function search(nameKey:any, myArray:any){
+    for (var i=0; i < myArray.length; i++) {
+        if (myArray[i].code === nameKey) {
+            return myArray[i];
+        }
+    }
+  }
+
+  function sum(values:Array<number>){
+    return values.reduce((a, b) => a + b, 0);
+  }
+
+  function sortFunction(a:any, b:any) {
+    let columnKey = 4;
+    if (a[columnKey] === b[columnKey]) {
+      return 0;
+    }
+    else {
+      return (parseFloat(a[columnKey]) < parseFloat(b[columnKey])) ? 1 : -1;
+    }
+  }
+  
   const assetsQuery = useQuery("assets", () => getAssets(), {
-    refetchInterval: 1500,
+    refetchInterval: 60000 * 30,
   });
-  const watchIdsQuery = useQuery("watching_assets", () => getWatchIds());
-  const addToWatchIdsMutation = useAddToWatchIdMutation();
-  const deleteFromWatchIdsMutation = useDeleteWatchIdsMutation();
 
-  const handleAddToWatchIds = (id: string) => {
-    if (addToWatchIdsMutation.isIdle) {
-      addToWatchIdsMutation.mutate(id);
-    }
-  };
-
-  const handleDeleteFromWatchIds = (id: string) => {
-    if (deleteFromWatchIdsMutation.isIdle) {
-      deleteFromWatchIdsMutation.mutate(id);
-    }
-  };
-
-  if (assetsQuery.isLoading) {
-    return (
-      <TextLoading className={styles.loading}>
-        Loading Crypto Assets
-      </TextLoading>
-    );
+  function amount(obj:any) {
+    return sum([
+      obj?.ally1 || 0,
+      obj?.ally2 || 0,
+      obj?.ally3 || 0,
+      obj?.blockfi || 0,
+      obj?.cakefi || 0,
+      obj?.coinbase || 0,
+      obj?.gemini || 0,
+      obj?.guideline || 0,
+      obj?.kraken || 0,
+      obj?.lendingclub || 0,
+      obj?.lively || 0,
+      obj?.benefitStrategies || 0,
+    ]);
   }
 
-  if (assetsQuery.isError) {
-    return (
-      <>
-        <div className={styles["error__text"]}>Error fetching assets!</div>
-        <button className="btn" onClick={() => assetsQuery.refetch()}>
-          Refetch
-        </button>
-      </>
-    );
+  function usd(price:any) {
+    return Math.round(Number(price) * 10000) / 10000.0;
   }
+
+  console.clear();
+
+  let tableData:Array<any> = [];
+  let total = 0;
+  assetsQuery.data && assetsQuery.data.forEach(item => {
+    let subtotal = (amount(search(item.symbol, monitorDB)) * usd(item.priceUsd)).toFixed(2);
+    tableData.push([
+      item.symbol,
+      item.name || item.symbol,
+      usd(item.priceUsd),
+      (amount(search(item.symbol, monitorDB))).toFixed(4),
+      subtotal
+    ]);
+    total += parseFloat(subtotal);
+  });
+  console.log(total);
 
   return (
-    <div>
-      {assetsQuery.data &&
-        assetsQuery.data.map((item) => {
-          const isBeingWatched =
-            watchIdsQuery.data && watchIdsQuery.data[item.id];
-
+    <>
+      {
+        tableData && tableData.sort(sortFunction).map(item => {
           return (
-            <Link to={`/${item.id}`} className={styles["link"]}>
-              <div className={styles["asset-item"]} key={item.id}>
-                <div>
-                  <div className={styles["asset-item__name"]}>{item.name}</div>
-                  <div className={styles["asset-item__symbol"]}>
-                    {item.symbol}
-                  </div>
-                </div>
-                <div className={styles["asset-item__price"]}>
-                  {Math.round(Number(item.priceUsd) * 10000) / 10000.0}
-                </div>
-                <button
-                  className={clsx(
-                    "btn",
-                    styles["asset-item__watch"],
-                    isBeingWatched && "btn--warning"
-                  )}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (isBeingWatched) {
-                      handleDeleteFromWatchIds(item.id);
-                    } else {
-                      handleAddToWatchIds(item.id);
-                    }
-                  }}
-                >
-                  {isBeingWatched ? "Unwatch" : "Watch"}
-                </button>
-              </div>
-            </Link>
+            <tr key={item[0]}>
+              <td>{item[0]}</td>
+              <td>{item[1]}</td>
+              <td>{item[2]}</td>
+              <td>{item[3]}</td>
+              <td>{item[4]}</td>
+            </tr>
           );
-        })}
-    </div>
+        })
+      }
+      <tr className="footer">
+        <td colSpan={5}>{total}</td>
+      </tr>
+    </>
   );
 };

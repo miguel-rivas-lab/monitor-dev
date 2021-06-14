@@ -48,6 +48,10 @@
   },
   "homepage": "https://gurleensethi.github.io/crypto-monitor",
   "devDependencies": {
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "@fontsource/montserrat": "^4.2.2",
+    "@mdi/font": "^5.9.55",
+    "sass": "^1.26.5",
+    "sass-loader": "^8.0.2"
   }
 }

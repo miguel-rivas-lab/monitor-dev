@@ -1,0 +1,101 @@
+@import "~@fontsource/montserrat/300.css";
+@import "~@fontsource/montserrat/400.css";
+@import "~@fontsource/montserrat/600.css";
+@import "~@mdi/font/css/materialdesignicons.min.css";
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+    font-family: 'Montserrat', Helvetica, Arial, Tahoma, sans-serif;
+    margin: 0;
+    background-color: #0b2333;
+    color: #fff;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+html {
+    padding: 0;
+}
+
+body {
+    padding: 15px;
+}
+
+.container {
+  flex-basis: 900px;
+  margin: auto;
+  padding: 0 1rem;
+  max-width: 100%;
+}
+
+table {
+    padding: 0.25rem;
+    width: 100%;
+    border-spacing: 0 7px;
+
+    tbody {
+        tr {
+            transition: opacity ease 200ms;
+
+            &.footer {
+                td {
+                    background-color: #112765;
+                    text-align: center;
+                    font-weight: 600;
+                }
+            }
+
+            &:hover {
+                opacity: 0.5;
+            }
+        }
+    }
+
+    th {
+        &, button {
+            text-align: left;
+            padding: 0 5px !important;
+            font-size: 10px;
+            letter-spacing: 2px;
+            font-weight: 100;
+            text-transform: uppercase;
+            padding: 0;
+            border: 0;
+            background-color: transparent;
+            color: inherit;
+        }
+    }
+
+    td {
+        background-color: rgb(255 255 255 / 8%);
+        padding: 7px;
+
+        &:first-child {
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+        &:last-child {
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+    }
+}
+
+p {
+    text-align: center;
+    background-color: rgba(35, 84, 156, 0.31);
+    padding: 9px;
+    margin: 0;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+button {
+    &:hover {
+        cursor: pointer;
+    }
+}
