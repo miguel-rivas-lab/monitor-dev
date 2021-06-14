@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useQuery } from "react-query";
 import { getAssets } from "../api";
-import { monitorDB } from "../db";
+import { cryptoDB, accountDB } from "../db";
 
 export const AssetList: FC = () => {
 
@@ -57,12 +57,23 @@ export const AssetList: FC = () => {
   let tableData:Array<any> = [];
   let total = 0;
   assetsQuery.data && assetsQuery.data.forEach(item => {
-    let subtotal = (amount(search(item.symbol, monitorDB)) * usd(item.priceUsd)).toFixed(2);
+    let subtotal = (amount(search(item.symbol, cryptoDB)) * usd(item.priceUsd)).toFixed(2);
     tableData.push([
       item.symbol,
       item.name || item.symbol,
       usd(item.priceUsd),
-      (amount(search(item.symbol, monitorDB))).toFixed(4),
+      (amount(search(item.symbol, cryptoDB))).toFixed(4),
+      subtotal
+    ]);
+    total += parseFloat(subtotal);
+  });
+  accountDB.forEach(item => {
+    let subtotal = (amount(item)).toFixed(2);
+    tableData.push([
+      item.code,
+      item.name || item.code,
+      1,
+      amount(item),
       subtotal
     ]);
     total += parseFloat(subtotal);
