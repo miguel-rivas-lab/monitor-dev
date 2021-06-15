@@ -57,46 +57,60 @@ export const AssetList: FC = () => {
   let tableData:Array<any> = [];
   let total = 0;
   assetsQuery.data && assetsQuery.data.forEach(item => {
-    let subtotal = (amount(search(item.symbol, cryptoDB)) * usd(item.priceUsd)).toFixed(2);
+    let currentAmount = amount(search(item.symbol, cryptoDB));
+    let investment = search(item.symbol, cryptoDB).usdInvestment;
+    let subtotal = currentAmount * usd(item.priceUsd);
+    let category = investment <= subtotal ? "success" : "";
+    let percent = (subtotal/investment * 100).toFixed(1) + "%";
     tableData.push([
       item.symbol,
       item.name || item.symbol,
       usd(item.priceUsd),
-      (amount(search(item.symbol, cryptoDB))).toFixed(4),
-      subtotal
+      currentAmount,
+      investment,
+      subtotal,
+      percent,
+      category,
     ]);
-    total += parseFloat(subtotal);
+    total += subtotal;
   });
   accountDB.forEach(item => {
-    let subtotal = (amount(item)).toFixed(2);
+    let subtotal = (amount(item));
+    let investment = item.usdInvestment || subtotal;
+    let category = investment < subtotal ? "success" : "";
+    let percent = (subtotal/investment * 100).toFixed(1) + "%";
     tableData.push([
       item.code,
       item.name || item.code,
       1,
-      amount(item),
-      subtotal
+      subtotal,
+      investment,
+      subtotal,
+      percent,
+      category,
     ]);
-    total += parseFloat(subtotal);
+    total += subtotal;
   });
-  console.log(total);
 
   return (
     <>
       {
         tableData && tableData.sort(sortFunction).map(item => {
           return (
-            <tr key={item[0]}>
+            <tr key={item[0]} className={item[7]}>
               <td>{item[0]}</td>
               <td>{item[1]}</td>
-              <td>{item[2]}</td>
-              <td>{item[3]}</td>
-              <td>{item[4]}</td>
+              <td>{item[2].toFixed(4)}</td>
+              <td>{item[3].toFixed(4)}</td>
+              <td>{item[4].toFixed(2)}</td>
+              <td>{item[5].toFixed(2)}</td>
+              <td>{item[6]}</td>
             </tr>
           );
         })
       }
       <tr className="footer">
-        <td colSpan={5}>{total}</td>
+        <td colSpan={7}>{total}</td>
       </tr>
     </>
   );

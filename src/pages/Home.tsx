@@ -9,9 +9,11 @@ export const HomePage: FC = () => {
           <tr>
             <th>Code</th>
             <th>Name</th>
-            <th><button>USD Value</button></th>
-            <th><button>Amount</button></th>
-            <th><button>Subtotal</button></th>
+            <th>USD Value</th>
+            <th>Amount</th>
+            <th>Investment</th>
+            <th>Subtotal</th>
+            <th>Gain</th>
           </tr>
         </thead>
         <tbody>
