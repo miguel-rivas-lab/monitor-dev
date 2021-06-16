@@ -1,7 +1,14 @@
 export const cryptoDB = [
   {
+    code: "BCH",
+    name: "Bitcoin Cash",
+    gemini: 0.021672,
+    usdInvestment: 15,
+  },
+  {
     code: "AMP",
     name: "",
+    coinbase: 35.2356807,
     gemini: 125.37760765,
     usdInvestment: 10,
   },
@@ -9,7 +16,7 @@ export const cryptoDB = [
     code: "CELO",
     name: "Celo",
     coinbase: 0.96080522,
-    usdInvestment: 2 + 2 + 2,
+    usdInvestment: 0,
   },
   {
     code: "CVC",
@@ -22,12 +29,6 @@ export const cryptoDB = [
     name: "district0x",
     coinbase: 29.69072611,
     usdInvestment: 10,
-  },
-  {
-    code: "FORTH",
-    name: "Ampleforth Governance Token",
-    coinbase: 0.07283816,
-    usdInvestment: 1 + 1 + 1,
   },
   {
     code: "GUSD",
@@ -51,7 +52,7 @@ export const cryptoDB = [
     code: "NU",
     name: "NuCypher",
     coinbase: 24.53375912,
-    usdInvestment: 10 + 1 + 1 + 1,
+    usdInvestment: 10,
   },
   {
     code: "OXT",
@@ -150,7 +151,7 @@ export const cryptoDB = [
     code: "COMP",
     name: "Compound",
     coinbase: 0.01802347,
-    usdInvestment: 3 + 3 + 3,
+    usdInvestment: 0,
   },
   {
     code: "DFI",
@@ -178,10 +179,16 @@ export const cryptoDB = [
     usdInvestment: 50,
   },
   {
+    code: "ZEC",
+    name: "Zcash",
+    gemini: 0.099645,
+    usdInvestment: 15,
+  },
+  {
     code: "GRT",
     name: "The Graph",
     coinbase: 1.88497751,
-    usdInvestment: 1 + 1 + 1,
+    usdInvestment: 0,
   },
   {
     code: "LINK",
@@ -199,7 +206,7 @@ export const cryptoDB = [
     code: "MATIC",
     name: "Polygon",
     coinbase: 26.29140619,
-    usdInvestment: 10 + 1 + 1 + 1,
+    usdInvestment: 10,
   },
   {
     code: "MKR",
@@ -211,13 +218,13 @@ export const cryptoDB = [
     code: "XLM",
     name: "Stellar Lumens",
     coinbase: 37.4986394,
-    usdInvestment: 10 + 2 + 2 + 2 + 2 + 2,
+    usdInvestment: 10,
   },
   {
     code: "XMR",
     name: "Monero",
-    kraken: 0.11373,
-    usdInvestment: 30,
+    kraken: 0.21936,
+    usdInvestment: 60,
   },
   {
     code: "XTZ",
@@ -233,23 +240,43 @@ export const cryptoDB = [
   },
 ];
 
+export const altCoinDB = [
+  {
+    code: "GTC",
+    name: "Gitcoin",
+    coinbase: 1.28516119,
+    usdInvestment: 15,
+    usd: 10.45,
+  },
+  {
+    code: "FORTH",
+    name: "Ampleforth Governance Token",
+    coinbase: 0.07283816,
+    usdInvestment: 0,
+    usd: 17.90,
+  },
+];
+
 export const accountDB = [
   {
     code: "IRA",
     name: "Individual Retirement Account",
     guideline: 4250.32,
+    usd: 1,
   },
   {
     code: "P2PL",
     name: "Peer to peer lending",
     lendingclub: 2284.33,
     usdInvestment: 5000 - 3351.95,
+    usd: 1,
   },
   {
     code: "HSA",
     name: "Health Saving Account",
     lively: 525.13,
     benefitStrategies: 146.17,
+    usd: 1,
   },
   // {
   //   code: "ROTH",
@@ -295,6 +322,9 @@ export const currency = [
   "ren",
   "sandbox",
   "skale-network",
+  "gitcoin",
+  "zcash",
+  "bitcoin-cash"
 ];
 
 export const monitorDB = [].concat(cryptoDB, accountDB);

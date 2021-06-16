@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useQuery } from "react-query";
 import { getAssets } from "../api";
-import { cryptoDB, accountDB } from "../db";
+import { cryptoDB, accountDB, altCoinDB } from "../db";
 
 export const AssetList: FC = () => {
 
@@ -18,7 +18,7 @@ export const AssetList: FC = () => {
   }
 
   function sortFunction(a:any, b:any) {
-    let columnKey = 4;
+    let columnKey = 5;
     if (a[columnKey] === b[columnKey]) {
       return 0;
     }
@@ -37,6 +37,7 @@ export const AssetList: FC = () => {
       obj?.ally2 || 0,
       obj?.ally3 || 0,
       obj?.blockfi || 0,
+      obj?.brave1 || 0,
       obj?.cakefi || 0,
       obj?.coinbase || 0,
       obj?.gemini || 0,
@@ -56,12 +57,14 @@ export const AssetList: FC = () => {
 
   let tableData:Array<any> = [];
   let total = 0;
+
   assetsQuery.data && assetsQuery.data.forEach(item => {
     let currentAmount = amount(search(item.symbol, cryptoDB));
     let investment = search(item.symbol, cryptoDB).usdInvestment;
     let subtotal = currentAmount * usd(item.priceUsd);
-    let category = investment <= subtotal ? "success" : "";
-    let percent = (subtotal/investment * 100).toFixed(1) + "%";
+    let category = investment < subtotal ? "success" : "";
+    category = investment > subtotal ? "danger" : category;
+    let gain = (subtotal - investment).toFixed(2);
     tableData.push([
       item.symbol,
       item.name || item.symbol,
@@ -69,24 +72,47 @@ export const AssetList: FC = () => {
       currentAmount,
       investment,
       subtotal,
-      percent,
+      gain,
       category,
     ]);
     total += subtotal;
   });
-  accountDB.forEach(item => {
-    let subtotal = (amount(item));
-    let investment = item.usdInvestment || subtotal;
+
+  altCoinDB.forEach(item => {
+    let currentAmount = (amount(item));
+    let subtotal = currentAmount * item.usd;
+    let investment = item.usdInvestment;
     let category = investment < subtotal ? "success" : "";
-    let percent = (subtotal/investment * 100).toFixed(1) + "%";
+    category = investment > subtotal ? "danger" : category;
+    category += " non-track";
+    let gain = (subtotal - investment).toFixed(2);
     tableData.push([
       item.code,
       item.name || item.code,
-      1,
+      item.usd,
+      currentAmount,
+      investment,
+      subtotal,
+      gain,
+      category,
+    ]);
+    total += subtotal;
+  });
+
+  accountDB.forEach(item => {
+    let subtotal = (amount(item)) * item.usd;
+    let investment = item.usdInvestment || subtotal;
+    let category = investment < subtotal ? "success" : "";
+    category = investment > subtotal ? "danger" : category;
+    let gain = (subtotal - investment).toFixed(2);
+    tableData.push([
+      item.code,
+      item.name || item.code,
+      item.usd,
       subtotal,
       investment,
       subtotal,
-      percent,
+      gain,
       category,
     ]);
     total += subtotal;
@@ -110,7 +136,7 @@ export const AssetList: FC = () => {
         })
       }
       <tr className="footer">
-        <td colSpan={7}>{total}</td>
+        <td colSpan={7}>{total.toFixed(2)}</td>
       </tr>
     </>
   );

@@ -7,7 +7,7 @@ export const WATCH_IDS_KEY = "watch_ids";
 export async function getAssets(): Promise<Asset[]> {
   return axios
     .get<{ data: Asset[] }>(`https://api.coincap.io/v2/assets?ids=${currency.join(',')}`)
-    .then((res) => res.data.data);
+    .then((response) => response.data.data);
 }
 
 export async function getWatchIds(): Promise<Record<string, boolean>> {

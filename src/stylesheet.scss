@@ -61,6 +61,12 @@ table {
                 }
             }
 
+            &.non-track {
+                td:first-child:before {
+                    content: "* ";
+                }
+            }
+
             &:hover {
                 opacity: 0.5;
             }
